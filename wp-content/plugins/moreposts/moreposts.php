@@ -13,10 +13,12 @@ Text Domain: moreposts
 
 // hook in all the important things
 function moreposts_scripts() {
-  //call CSS only for single post & main query
+  // if single post & main query
   if( is_single() && is_main_query() ) {
     // get plugin stylesheet
     wp_enqueue_style( 'moreposts-style', plugin_dir_url( __FILE__ ) . 'css/style.css', '0.1', 'all');
+    // get javascript
+    wp_enqueue_script( 'moreposts-script', plugin_dir_url( __FILE__) . 'js/moreposts.ajax.js', array('jquery'), '0.1', true );
   }
 
 }
