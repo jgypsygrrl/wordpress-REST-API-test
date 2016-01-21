@@ -21,8 +21,18 @@
       console.log(response);
       // loop through each of the related posts
       $.each(response, function(index, object) {
-        $('#related-posts').append('<h2>' + object.title.rendered + '</h2>')
-      })
+        var related_loop =
+          '<aside class="related-post clear">' +
+          '<a href="' + object.link + '">' +
+          '<h1 class="related-post-title">' + object.title.rendered + '</h1>' +
+          '<div class="related-excerpt">' +
+          object.excerpt.rendered +
+          '</div>' +
+          '</a>' +
+          '</aside><!-- .related-post -->';
+
+        $('#related-posts').append(related_loop);
+      });
     })
 
     .fail(function() {
