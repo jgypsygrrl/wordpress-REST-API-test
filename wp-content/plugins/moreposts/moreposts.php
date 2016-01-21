@@ -23,10 +23,44 @@ function moreposts_scripts() {
 add_action( 'wp_enqueue_scripts', 'moreposts_scripts' );
 
 
+/**
+ * Create REST API url
+ * - Get the current categories
+ * - Get the category IDs
+ * - Create the arguments for categories and posts-per-page
+ * - Create the url
+ */
+function moreposts_get_json_query() {
+
+  // get all the categories in the current post
+  $cats = get_the_category();
+
+  // make an array of the categories
+  $cat_ids = array();
+
+  // loop through each of the categories and grab just the ID
+  foreach ( $cats as $cat ) {
+    $cat_ids[] = $cat->term_id;
+  }
+
+  // set up the query variable for category IDs and posts per page
+  $args = array(
+      'filter[cat]' => implode( ",", $cat_ids ),
+      'filter[posts_per_page]' => 5
+    );
+
+  // put everything together in a URL
+  $url = add_query_arg( $args, rest_url( 'wp/v2/posts') );
+
+  return $url;
+
+}
+
 // base HTML to be added to the bottom of a post
 function moreposts_baseline_html() {
   //container
   $baseline  = '<section id="related-posts" class="related-posts">';
+  $baseline .= moreposts_get_json_query();
   $baseline .= '<a href="#" class="get-related-posts">Get related posts</a>';
   $baseline .= '<div class="ajax-loader"><img src="' . plugin_dir_url( __FILE__ ) . 'css/spinner.svg" width="32" height="32" /></div>';
   $baseline .= '</section><!-- .related-posts -->';
