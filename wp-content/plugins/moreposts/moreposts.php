@@ -19,6 +19,19 @@ function moreposts_scripts() {
     wp_enqueue_style( 'moreposts-style', plugin_dir_url( __FILE__ ) . 'css/style.css', '0.1', 'all');
     // get javascript
     wp_enqueue_script( 'moreposts-script', plugin_dir_url( __FILE__) . 'js/moreposts.ajax.js', array('jquery'), '0.1', true );
+
+    // get the current post ID
+    global $post;
+    $post_id = $post->ID;
+
+    // using WP translation feature to pass values to javascript
+    wp_localize_script( 'moreposts-script', 'postdata', 
+      array(
+        'post_id' => $post_id,
+        'json_url' => moreposts_get_json_query()
+      )
+    );
+
   }
 
 }

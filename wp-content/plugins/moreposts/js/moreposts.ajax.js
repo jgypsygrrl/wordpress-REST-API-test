@@ -5,6 +5,10 @@
 (function($) {
   $('.get-related-posts').on('click', function(event) {
     event.preventDefault();
-    console.log('Click!');
+    var json_url = postdata.json_url;
+    var post_id = postdata.post_id;
+
+    console.log(json_url);
+    console.log(post_id);
   });
 })(jQuery);
