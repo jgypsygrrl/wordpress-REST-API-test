@@ -25,6 +25,7 @@
           '<aside class="related-post clear">' +
           '<a href="' + object.link + '">' +
           '<h1 class="related-post-title">' + object.title.rendered + '</h1>' +
+          '<div class="related-author">by <em>' + object.author_name + '</em></div>' +
           '<div class="related-excerpt">' +
           object.excerpt.rendered +
           '</div>' +

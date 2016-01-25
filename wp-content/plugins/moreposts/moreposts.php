@@ -11,6 +11,26 @@ Domain Path: /languages
 Text Domain: moreposts
 */
 
+// add various fields to the JSON output
+function moreposts_register_fields() {
+  // add author name
+  register_api_field( 'post',
+    'author_name',
+    array(
+      'get_callback'    =>'moreposts_get_author_name',
+      'update_callback' => null,
+      'schema'          => null
+       )
+    );
+}
+
+// get author name
+function moreposts_get_author_name($object, $field_name, $request) {
+  return get_the_author_meta( 'display_name' );
+}
+add_action( 'rest_api_init', 'moreposts_register_fields');
+
+
 // hook in all the important things
 function moreposts_scripts() {
   // if single post & main query
