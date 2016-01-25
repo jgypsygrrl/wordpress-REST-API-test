@@ -19,19 +19,32 @@
 
     .done(function(response) {
       console.log(response);
+
       // loop through each of the related posts
       $.each(response, function(index, object) {
-        var related_loop =
-          '<aside class="related-post clear">' +
+
+        var feat_img = '';
+
+        // if there's a featured image, it will be added
+        if (object.featured_image !== 0) {
+          feat_img = '<figure class="related-featured">' +
+            '<img src="' + object.featured_image_src + '" alt="">' +
+            '</figure>';
+        }
+
+        // HTML to be added
+        var related_loop = '<aside class="related-post clear">' +
           '<a href="' + object.link + '">' +
           '<h1 class="related-post-title">' + object.title.rendered + '</h1>' +
           '<div class="related-author">by <em>' + object.author_name + '</em></div>' +
           '<div class="related-excerpt">' +
+          feat_img +
           object.excerpt.rendered +
           '</div>' +
           '</a>' +
           '</aside><!-- .related-post -->';
 
+        // append HTML to existing content
         $('#related-posts').append(related_loop);
       });
     })
@@ -41,7 +54,7 @@
     })
 
     .always(function() {
-      console.log("Complete")
+      console.log("Complete");
     });
 
   });

@@ -20,14 +20,30 @@ function moreposts_register_fields() {
       'get_callback'    =>'moreposts_get_author_name',
       'update_callback' => null,
       'schema'          => null
-       )
-    );
+    )
+  );
+  // add featured image
+  register_api_field( 'post',
+    'featured_image_src',
+    array(
+      'get_callback'    =>'moreposts_get_image_src',
+      'update_callback' => null,
+      'schema'          => null
+    )
+  );
 }
 
 // get author name
 function moreposts_get_author_name($object, $field_name, $request) {
   return get_the_author_meta( 'display_name' );
 }
+
+// get featured image
+function moreposts_get_image_src($object, $field_name, $request) {
+  $feat_img_array = wp_get_attachment_image_src( $object[ 'featured_image' ], 'thumbnail', true );
+    return $feat_img_array[0];
+}
+
 add_action( 'rest_api_init', 'moreposts_register_fields');
 
 
@@ -36,7 +52,7 @@ function moreposts_scripts() {
   // if single post & main query
   if( is_single() && is_main_query() ) {
     // get plugin stylesheet
-    wp_enqueue_style( 'moreposts-style', plugin_dir_url( __FILE__ ) . 'css/style.css', '0.1', 'all');
+    wp_enqueue_style( 'moreposts-style', plugin_dir_url( __FILE__ ) . 'css/style.css', array(), '0.1', 'all');
     // get javascript
     wp_enqueue_script( 'moreposts-script', plugin_dir_url( __FILE__) . 'js/moreposts.ajax.js', array('jquery'), '0.1', true );
 
@@ -44,7 +60,7 @@ function moreposts_scripts() {
     global $post;
     $post_id = $post->ID;
 
-    // using WP translation feature to pass values to javascript
+    // using WP translation feature to pass values to the JS file
     wp_localize_script( 'moreposts-script', 'postdata', 
       array(
         'post_id' => $post_id,
