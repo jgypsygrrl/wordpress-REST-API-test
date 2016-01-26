@@ -5,11 +5,16 @@
 (function($) {
   $('.get-related-posts').on('click', function(event) {
     event.preventDefault();
+
+    // remove button on click
+    $('a.get-related-posts').remove();
+
+    // loader appears on click
+    $('.ajax-loader').show();
+
+    // get REST URL and post ID from WP
     var json_url = postdata.json_url;
     var post_id = postdata.post_id;
-
-    console.log(json_url);
-    console.log(post_id);
 
     // AJAX
     $.ajax({
@@ -18,10 +23,17 @@
     })
 
     .done(function(response) {
-      console.log(response);
+
+      // adds Related Post header
+      $('#related-posts').append('<h1 class="related-header">Related Posts:</h1>');
 
       // loop through each of the related posts
       $.each(response, function(index, object) {
+
+        // prevents current post to be listed
+        if (object.id == post_id) {
+          return;
+        }
 
         var feat_img = '';
 
@@ -44,18 +56,17 @@
           '</a>' +
           '</aside><!-- .related-post -->';
 
+        // stop loader
+        $('.ajax-loader').remove();
+
         // append HTML to existing content
         $('#related-posts').append(related_loop);
       });
     })
 
-    .fail(function() {
-      console.log('Fail!!!');
-    })
+    .fail(function() {})
 
-    .always(function() {
-      console.log("Complete");
-    });
+    .always(function() {});
 
   });
 })(jQuery);

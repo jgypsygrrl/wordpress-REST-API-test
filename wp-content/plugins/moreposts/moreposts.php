@@ -111,7 +111,6 @@ function moreposts_get_json_query() {
 function moreposts_baseline_html() {
   //container
   $baseline  = '<section id="related-posts" class="related-posts">';
-  $baseline .= moreposts_get_json_query();
   $baseline .= '<a href="#" class="get-related-posts">Get related posts</a>';
   $baseline .= '<div class="ajax-loader"><img src="' . plugin_dir_url( __FILE__ ) . 'css/spinner.svg" width="32" height="32" /></div>';
   $baseline .= '</section><!-- .related-posts -->';
